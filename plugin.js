@@ -1,7 +1,7 @@
 
 exports.for = function(API, plugin) {
 
-    plugin.resolveLocator = function(locator, options) {
+    plugin.resolveLocator = function(locator, options, callback) {
         var self = this;
 
 		locator.url = locator.descriptor.pointer;
@@ -13,7 +13,7 @@ exports.for = function(API, plugin) {
             return (type)?locations[type]:locations;
         }
 
-        return self.API.Q.resolve(locator);
+        return callback(null, locator);
     }
 
     plugin.extract = function(fromPath, toPath, locator, options) {
