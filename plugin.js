@@ -33,7 +33,15 @@ exports.for = function(API, plugin) {
         var deferred = API.Q.defer();
         API.FS.copy(fromPath, toPath, function(err) {
             if (err) return deferred.reject(err);
-            return deferred.resolve();
+            if (locator.url) {
+                return API.FS.symlink(PATH.basename(toPath), PATH.join(toPath, "..", PATH.basename(locator.url)), function(err) {
+                    if (err) return deferred.reject(err);
+
+                    return deferred.resolve();
+                });
+            } else {
+                return deferred.resolve();
+            }
         });
         return deferred.promise;
     }
